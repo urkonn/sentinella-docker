@@ -2,7 +2,7 @@
 from setuptools import setup, find_packages
 
 
-exclude = ['sentinella.myplugin.myplugin']
+exclude = ['sentinella.sentinella-docker.sentinella-docker.sentinelladocker']
 
 install_requires = ['trollius==2.0', 'docker']
 
