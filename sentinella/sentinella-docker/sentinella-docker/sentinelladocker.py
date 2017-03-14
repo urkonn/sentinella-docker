@@ -56,15 +56,15 @@ def docker_stats(agent):
 
             for container in container_list:
                 if container.status != 'running':
-                    metric = "{0}-status".format(container.name)
+                    metric = "{0}_status".format(container.name)
                     data['plugins'][plugin_key].update({metric:{"value":container.status,"type": "string"}})
                 else:
-                    metric = "{0}-status".format(container.name)
+                    metric = "{0}_status".format(container.name)
                     data['plugins'][plugin_key].update({metric:{"value":container.status,"type":"string"}})
                     cpu = container.stats(decode=True, stream=False)['cpu_stats']['cpu_usage']['total_usage']
-                    metric = "{0}-cpu".format(container.name)
+                    metric = "{0}_cpu".format(container.name)
                     data['plugins'][plugin_key].update({metric:{"value":cpu,"type":"integer"}})
-                    metric = "{0}-memory".format(container.name)
+                    metric = "{0}_memory".format(container.name)
                     mem = container.stats(decode=True, stream=False)['memory_stats']['usage']
                     data['plugins'][plugin_key].update({metric:{"value":mem,"type":"integer" }})
                     """
