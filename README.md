@@ -7,6 +7,7 @@
 sentinella-docker plugin gets Docker containers metrics into [Sentinel.la](https://www.sentinel.la)
 
 
+In order to this plugin to work, Docker should run as a service not by a sudo user.
 
 -----
 
