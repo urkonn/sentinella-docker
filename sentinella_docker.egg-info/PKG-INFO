@@ -1,0 +1,19 @@
+Metadata-Version: 1.1
+Name: sentinella-docker
+Version: 0.1
+Summary: Some description
+Home-page: https://github.com/urkonn/sentinella-docker
+Author: Julio Acuña
+Author-email: urkonn@gmail.com
+License: ASF
+Description: UNKNOWN
+Keywords: monitoring metrics agent openstack sentinella
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: System Administrators
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Topic :: System :: Monitoring
