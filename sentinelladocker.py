@@ -49,31 +49,86 @@ def docker_stats(agent):
             """
 
             data['plugins'].update({"{}".format(plugin_key):{}})
-             
-            client = docker.from_env()
-            container_list = client.containers.list(all)
-            data['plugins'][plugin_key].update({"number_of_containers": { "value":len(container_list),"type":"integer" }})
+            client = docker.from_env(version='auto')
+            container_list = client.containers.list()
+            
+            # Number of containers
+            containers = {
+                            "number_of_containers":{
+                                "row_name": "Containers",
+                                "metric_name": "Number of containers",
+                                "value":len(container_list),
+                                "type":"number"
+                            }
+                        }
+
+            data['plugins'][plugin_key].update(containers)
 
             for container in container_list:
+                id = container.id
                 if container.status != 'running':
-                    metric = "{0}_status".format(container.name)
-                    data['plugins'][plugin_key].update({metric:{"value":container.status,"type": "string"}})
+                    
+                    body = {
+                            "container_status_{0}".format(id):{
+                                "row_name": container.name,
+                                "metric_name":"status",
+                                "value":container.status,
+                                "type":"String"
+                            }
+                        }
+
+                    data['plugins'][plugin_key].update(body)
+
                 else:
-                    metric = "{0}_status".format(container.name)
-                    data['plugins'][plugin_key].update({metric:{"value":container.status,"type":"string"}})
-                    cpu = container.stats(decode=True, stream=False)['cpu_stats']['cpu_usage']['total_usage']
-                    metric = "{0}_cpu".format(container.name)
-                    data['plugins'][plugin_key].update({metric:{"value":cpu,"type":"integer"}})
-                    metric = "{0}_memory".format(container.name)
-                    mem = container.stats(decode=True, stream=False)['memory_stats']['usage']
-                    data['plugins'][plugin_key].update({metric:{"value":mem,"type":"integer" }})
-                    """
-                    print (container.short_id,
-                           container.name,
-                           container.status,
-                           container.stats(decode=True, stream=False)['cpu_stats']['cpu_usage']['total_usage'],
-                           container.stats(decode=True, stream=False)['memory_stats']['usage'])
-                    """
+
+                    body = {
+                            "container_status_{0}".format(id):{
+                                "row_name": container.name,
+                                "metric_name":"status",
+                                "value":container.status,
+                                "type":"String"
+                            }
+                        }
+
+                    data['plugins'][plugin_key].update(body)
+                    
+                    cpu_total_usage = container.stats(decode=True, stream=False)['cpu_stats']['cpu_usage']['total_usage']
+                    precpu_total_usage = container.stats(decode=True, stream=False)['precpu_stats']['cpu_usage']['total_usage']
+                    cpuDelta = float(cpu_total_usage) - float(precpu_total_usage)
+
+                    system_cpu_usage = container.stats(decode=True, stream=False)['cpu_stats']['system_cpu_usage']
+                    system_precpu_usage = container.stats(decode=True, stream=False)['precpu_stats']['system_cpu_usage']
+                    systemDelta = float(system_cpu_usage) - float(system_precpu_usage)
+
+                    cpu_usage = cpuDelta / systemDelta * 100;
+
+                    body = {
+                            'container_cpu_{0}'.format(id):{
+                                "row_name":container.name,
+                                "metric_name":"cpu",
+                                "value":round(cpu_usage,2),
+                                "type":"%"
+                            }
+                        }
+
+                    data['plugins'][plugin_key].update(body)
+
+                    memory = container.stats(decode=True, stream=False)['memory_stats']['usage']
+                    limit = container.stats(decode=True, stream=False)['memory_stats']['limit']
+                    memory_usage = float(memory) / float(limit) * 100
+                    
+                    body = {
+                            'container_memory_{0}'.format(id):{
+                                "row_name":container.name,
+                                "metric_name":"memory",
+                                "value":round(memory_usage,2),
+                                "type":"%"
+                            }
+                        }
+
+                    data['plugins'][plugin_key].update(body)
+                    
+
 
             logger.debug('{}: dockerplugin={}%'.format(hostname, data))
 
