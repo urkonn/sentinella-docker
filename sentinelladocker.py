@@ -100,13 +100,13 @@ def docker_stats(agent):
                     system_precpu_usage = container.stats(decode=True, stream=False)['precpu_stats']['system_cpu_usage']
                     systemDelta = float(system_cpu_usage) - float(system_precpu_usage)
 
-                    cpu_usage = cpuDelta / systemDelta * 100;
+                    cpu_usage = cpuDelta / systemDelta * 100.00;
 
                     body = {
                             'container_cpu_{0}'.format(id):{
                                 "row_name":container.name,
                                 "metric_name":"cpu",
-                                "value":round(cpu_usage,2),
+                                "value":round(cpu_usage,4),
                                 "type":"%"
                             }
                         }
@@ -121,7 +121,7 @@ def docker_stats(agent):
                             'container_memory_{0}'.format(id):{
                                 "row_name":container.name,
                                 "metric_name":"memory",
-                                "value":round(memory_usage,2),
+                                "value":round(memory_usage,4),
                                 "type":"%"
                             }
                         }
@@ -131,7 +131,7 @@ def docker_stats(agent):
 
 
             logger.debug('{}: dockerplugin={}%'.format(hostname, data))
-
+            logger.info('{}: dockerplugin={}%'.format(hostname, data))
             yield From(agent.async_push(data))
 
         except:
