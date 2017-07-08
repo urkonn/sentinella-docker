@@ -6,6 +6,8 @@
 
 sentinella-docker plugin gets Docker containers metrics into [Sentinel.la](https://www.sentinel.la)
 
+![Sentinella Docker}](/images/sentinellaDocker.png)
+Format: ![Sentinella Docker](/images/sentinellaDocker.png)
 
 In order to this plugin to work, Docker should run as a service not by a sudo user.
 
