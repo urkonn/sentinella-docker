@@ -9,6 +9,12 @@ sentinella-docker plugin gets Docker containers metrics into [Sentinel.la](https
 
 In order to this plugin to work, Docker should run as a service not by a sudo user.
 
+``` bash
+$ usermod -a -G docker sentinella
+$ sentinella install sentinella-docker 0.1
+```
+
+
 -----
 
 
