@@ -15,7 +15,7 @@ $ usermod -a -G docker sentinella
 $ sentinella install sentinella-docker 0.1
 ```
 
-# Configurartio plugin
+# Configurartion plugin
 
 ``` bash
 $ vi /etc/sentinella/sentinella.conf
@@ -28,7 +28,7 @@ Add the next cofiguration in section plugins
 "plugins": {
 
         ....
-        
+
         "sentinella.sentinelladocker": [
 
             "docker_stats"
