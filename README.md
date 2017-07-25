@@ -27,18 +27,8 @@ Add the next cofiguration in section plugins
 
 "plugins": {
 
-        "sentinella.openstack_logs": [
-
-            "get_openstack_events"
-
-        ], 
-
-        "sentinella.metrics": [
-
-            "get_server_usage_stats"
-
-        ],
-
+        ....
+        
         "sentinella.sentinelladocker": [
 
             "docker_stats"
