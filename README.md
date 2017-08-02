@@ -29,7 +29,7 @@ Add the next cofiguration in section plugins
 
         ....
 
-        "sentinella.sentinelladocker": [
+        "sentinella.sentinella-docker": [
 
             "docker_stats"
 
